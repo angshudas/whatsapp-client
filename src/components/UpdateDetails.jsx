@@ -1,22 +1,38 @@
 import React,{ useState,useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { edit,close } from '../images/index';
+import { edit,close,default_userimg } from '../images/index';
 import { updateUser } from '../features/userSlice';
 import { Navigate,useOutletContext } from 'react-router-dom';
 
 function UpdateDetails() {
-  const setPopup = useOutletContext();
+  // const setPopup = useOutletContext();
   const [email, setEmail] = useState(false);
   const [username, setUsername] = useState(false);
-  const [userimg, setUserimg] = useState('');
+  const [userimg, setUserimg] = useState(false);
   const [updated, setUpdated] = useState(false);
   const user = useSelector(store=>store.user);
   const dispatch = useDispatch();
+  // const userimgRef = useRef();
+  // console.log(user);
   
 
   const clearInput = (e)=>{
     setEmail(false);
     setUsername(false);
+  }
+
+  const convertImage = ()=>{
+    let file = document.querySelector('#userimg')['files'][0];
+    console.log(file);
+    let reader = new FileReader();
+    // let baseString;
+    reader.onloadend = function () {
+        setUserimg(reader.result);
+        // console.log(baseString); 
+        console.log('done');
+    };
+    reader.readAsDataURL(file);
+    
   }
 
   const toggleUsername = ()=>{
@@ -61,10 +77,7 @@ function UpdateDetails() {
   }
 
 
-  if( updated ){
-    // console.log(typeof setPopup);
-    setPopup(false);
-    
+  if( updated ){    
     return <Navigate to="/" />
   }
   
@@ -74,14 +87,12 @@ function UpdateDetails() {
       <h1 className='text-center text-3xl text-green-600 font-semibold my-2.5 '>Update Details</h1>     
    
     <label htmlFor="userimg">
-      <div className='w-24 aspect-square rounded-full bg-green-500 absolute top-1/2 right-full -translate-y-1/2 translate-x-8'>
-
-      </div>
-      <input type="file" className='hidden' id='userimg' />
+      <img src={userimg===false?default_userimg:userimg}  className='w-24 aspect-square rounded-full bg-slate-500 absolute top-1/2 right-full -translate-y-1/2 translate-x-8 object-fill object-center border-2 border-slate-500' />
+      <input type="file" className='hidden' id='userimg' onChange={convertImage} />
     </label> 
       <div>
         <div className='flex gap-2 items-center'>
-          <span onClick={toggleEmail} className={`w-8 flex items-center justify-center ${email===false?'hover:bg-green-500':'hover:bg-red-500'} duration-200 aspect-square rounded-full`}>{email===false?edit:close}</span> 
+          <img src={email===false?edit:close} onClick={toggleEmail} className={`w-8 flex items-center justify-center ${email===false?'hover:bg-green-500':'hover:bg-red-500 bg-slate-500'} duration-200 aspect-square rounded-full `} />
           {email===false?
             <span className='text-lg'>Email : {user.email}</span>  :
             // <span>{user.email}</span> :
@@ -92,9 +103,9 @@ function UpdateDetails() {
       </div>
       <div>
         <div className='flex gap-2 items-center'>
-          <span onClick={toggleUsername} className={`w-8 flex items-center justify-center ${username===false?'hover:bg-green-500':'hover:bg-red-500'} duration-200 aspect-square rounded-full`}>{username===false?edit:close}</span> 
+          <img src={username===false?edit:close} onClick={toggleUsername} className={`w-8 flex items-center justify-center ${username===false?'hover:bg-green-500':'hover:bg-red-500 bg-slate-500'} duration-200 aspect-square rounded-full `} />
           {username===false?
-            <span className='text-lg w-80'>Username : {user.username} </span> :
+            <span className='text-lg w-80 '>Username : {user.username} </span> :
             <input type="text" placeholder='Username' value={username} onChange={(e)=>{setUsername(e.target.value)}}
               className='w-80 placeholder:text-white bg-slate-600 rounded-md px-2 py-1.5' />
         }

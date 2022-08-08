@@ -6,16 +6,17 @@ export const socket = io('http://127.0.0.1:3500/');
 
 const initialState = {
   fetching : false,
+  roomimg : '',
+  name : '',
   roomId : '',
   messages : [],
-  members : [],
   totalMessages : 0,
   pageNo : 0,
 };
 
 export const getRoomDetails = createAsyncThunk(
   'room/details',
-  async({roomId,accessToken},thunkAPI)=>{
+  async({roomId,accessToken,roomimg,name},thunkAPI)=>{
     console.log(roomId);
     const res = await axios.get('http://127.0.0.1:3500/room/details',{
       headers : { 
@@ -28,7 +29,7 @@ export const getRoomDetails = createAsyncThunk(
     if( res.status!==200 )
       return thunkAPI.rejectWithValue('room not updated');
     // console.log(res.data);
-    return res.data;
+    return {...res.data,roomId,roomimg,name};
   }
 );
 
@@ -55,11 +56,10 @@ const roomSlice = createSlice({
     },
     [getRoomDetails.fulfilled] : (state,{payload})=>{
       state.fetching = false;
-      // console.log(payload);
-      state.roomId = payload._id;
+      state.roomId = payload.roomId;
+      state.name = payload.name;
+      state.roomimg = payload.roomimg;
       state.messages = payload.messages;
-      state.members = payload.members;
-      // state.totalMessages = totalMessages;
       state.pageNo = 1;
     },
     [getRoomDetails.rejected] : (state)=>{

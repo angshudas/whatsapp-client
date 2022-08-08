@@ -14,6 +14,7 @@ import UpdateDetails from './components/UpdateDetails';
 import UpdatePassword from './components/UpdatePassword';
 import Chat from './components/Chat';
 import NoChat from './components/NoChat';
+import Popup from './components/Popup';
 // import Popup from './components/Popup';
 
 function App() {
@@ -29,17 +30,23 @@ function App() {
 
       <Route path='/' element={<PersistentUser/>} >
         <Route path='/' element={<Home />} >
-          <Route path='popup/newchat' element={<NewChat/>} />
-          <Route path='popup/deletechat' element={<DeleteChat/>} />
-          <Route path='popup/updatedetails' element={<UpdateDetails/>} />
-          <Route path='popup/updatepassword' element={<UpdatePassword/>} />
           <Route path='/'>
             <Route path='/' element={<NoChat />}/>
             <Route path='chat/:chat_id' element={<Chat />} />
           </Route>
         </Route>
+
+        <Route path='popup' element={<Popup />}>
+          <Route path='newchat' element={<NewChat/>} />
+          <Route path='deletechat' element={<DeleteChat/>} />
+          <Route path='updatedetails' element={<UpdateDetails/>} />
+          <Route path='updatepassword' element={<UpdatePassword/>} />
+        </Route>
         
       </Route>
+
+      
+
 
     </Routes>
   )

@@ -53,7 +53,7 @@ function Chat() {
 
     const newMessage = {
       message: text,
-      sender: user.username===room.members[0].username?room.members[1].username:room.members[0].username,
+      sender: room.name,
       time: Date.now(),
       _id : uuid(),
     };
@@ -101,8 +101,8 @@ function Chat() {
   return (
     <div className='w-2/3  flex flex-col gap-2 overflow-hidden'>
       <div className='flex gap-3 items-center bg-second p-2 border-b-2 border-slate-500 w-full relative'>
-        <img src={lake} alt="img" className='rounded-full aspect-square w-12 object-cover object-center border-2 border-slate-500' />
-        <p className='text-xl capitalize grow'>{user.username===room.members[0].username?room.members[1].username:room.members[0].username}</p>
+        <img src={room.roomimg} alt="img" className='rounded-full aspect-square w-12 object-cover object-center border-2 border-slate-500' />
+        <p className='text-xl  grow'>{room.name}</p>
       </div>
 
       <div ref={messRef} className='flex-grow flex flex-col px-5 gap-3 overflow-y-scroll py-6 text-lg'>

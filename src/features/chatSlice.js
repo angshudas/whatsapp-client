@@ -13,6 +13,8 @@ export const getAllChats = createAsyncThunk(
   async({accessToken},thunkAPI)=>{
     let res = await axios.get('http://127.0.0.1:3500/chat/allchats',{headers : {authorization : `Bearer ${accessToken}`}});
 
+
+    console.log(res.data);
     if( res.status!==200 )
       return thunkAPI.rejectWithValue('kdk');
     return res.data.user;

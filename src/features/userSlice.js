@@ -16,6 +16,7 @@ export const fetchUser = createAsyncThunk(
   'user/fetchUser',
   async({setLoggedIn,email,password},thunkAPI)=>{
     const res = await axios.post('http://127.0.0.1:3500/user/login',{email,password},{ withCredentials : true });
+    console.log(res.data);
     if( res.status===200 ){
       setLoggedIn(true);
       return res.data;
@@ -34,6 +35,7 @@ export const refresh = createAsyncThunk(
     if( res.status!==200 )
       return thunkAPI.rejectWithValue('refresh not found');
     
+    console.log(res.data);
     return res.data;
   }
 );
@@ -89,13 +91,8 @@ const userSlice = createSlice({
       // console.log('peding');
     },
     [fetchUser.fulfilled] : (state,{ payload })=>{
-      state.username = payload.username;
-      state.email = payload.email;
-      state.accessToken = payload.accessToken;
       state.isLoading = false;
-      state.tried = true;
-      state.userState = 'loggedin';
-      // console.log('fulfilled');
+      state.accessToken = payload.accessToken;
     },
     [fetchUser.rejected] : (state)=>{
       state.isLoading = true;
@@ -112,6 +109,7 @@ const userSlice = createSlice({
       state.accessToken = payload.accessToken;
       state.isLoading = false;
       state.userState = 'loggedin';
+      state.userimg = payload.userimg;
       // console.log('fulfilled');
 
     },
