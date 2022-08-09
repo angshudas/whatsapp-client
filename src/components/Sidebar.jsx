@@ -4,16 +4,14 @@ import { useSelector,useDispatch } from 'react-redux';
 import { getAllChats } from '../features/chatSlice';
 import {more} from '../images/index';
 import { NavLink } from 'react-router-dom';
-// import { updateRoom } from '../features/userSlice';
 import { socket } from '../features/roomSlice';
 import { getRoomDetails } from '../features/roomSlice';
 
 
-function Sidebar({setPopup}) {
+function Sidebar() {
 
   const user = useSelector(store=>store.user);
   const chats = useSelector(store=>store.chat);
-  const room = useSelector(store=>store.room);
   const [hideMore, setHideMore] = useState(true);
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -52,7 +50,7 @@ function Sidebar({setPopup}) {
       className='w-11/12 bg-third rounded-2xl py-1.5 px-2 placeholder:text-center placeholder:text-white placeholder:text-lg ' />
 
       <div className='w-full flex flex-col gap-2 py-3 flex-grow overflow-y-scroll overflow-x-hidden cursor-pointer'>
-        {[...chats.joinedChats,...chats.waitingChats,...chats.blockedChats].map(chat=>{
+        {chats.joinedChats.map(chat=>{
           // {[newChat]}.map(chat=>{
           return <NavLink to={`chat/${chat._id}`} key={chat._id} 
           onClick={()=>dispatch(getRoomDetails({name : chat.members[0].username,roomId : chat._id,roomimg : chat.members[0].userimg,accessToken : user.accessToken}))}

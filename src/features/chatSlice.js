@@ -4,8 +4,6 @@ import axios from 'axios';
 
 const initialState = {
   joinedChats : [],
-  waitingChats : [],
-  blockedChats : [],
 };
 
 export const getAllChats = createAsyncThunk(
@@ -66,9 +64,6 @@ const chatSlice = createSlice({
     [getAllChats.fulfilled]: (state,{payload})=>{
       // state.isLoading = false;
       state.joinedChats = JSON.parse(JSON.stringify(payload.joinedChats));
-      state.waitingChats = JSON.parse(JSON.stringify(payload.waitingChats));
-      state.blockedChats = JSON.parse(JSON.stringify(payload.blockedChats));
-      console.log(payload,'payload');
       console.log(state.joinedChats,'joined chat');
     },
     [getAllChats.rejected]: (state)=>{

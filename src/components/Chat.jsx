@@ -1,5 +1,4 @@
 import React,{useRef,useState,useEffect} from 'react';
-import lake from '../images/lake.jpg';
 import { aeroplane } from '../images/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
