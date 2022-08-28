@@ -1,6 +1,5 @@
-import React,{ useState,useEffect } from 'react';
+import React from 'react';
 import Sidebar from './Sidebar';
-import Popup from './Popup';
 import { Outlet } from 'react-router-dom';
 
 function Home() {

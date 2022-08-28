@@ -15,7 +15,7 @@ const initialState = {
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
   async({setLoggedIn,email,password},thunkAPI)=>{
-    const res = await axios.post('http://127.0.0.1:3500/user/login',{email,password},{ withCredentials : true });
+    const res = await axios.post('https://git.heroku.com/sheltered-stream-49666.git/user/login',{email,password},{ withCredentials : true });
     console.log(res.data);
     if( res.status===200 ){
       setLoggedIn(true);
@@ -31,7 +31,7 @@ export const refresh = createAsyncThunk(
   'user/refresh',
   async(setTried,thunkAPI)=>{
     setTried(true);
-    const res = await axios.get('http://127.0.0.1:3500/auth/refresh',{withCredentials:true});
+    const res = await axios.get('https://git.heroku.com/sheltered-stream-49666.git/auth/refresh',{withCredentials:true});
     if( res.status!==200 )
       return thunkAPI.rejectWithValue('refresh not found');
     
@@ -43,7 +43,7 @@ export const refresh = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   'user/updatedetails',
   async({myuser,accessToken,setUpdated},thunkAPI)=>{
-    const res = await axios.post('http://127.0.0.1:3500/user/update/details',
+    const res = await axios.post('https://git.heroku.com/sheltered-stream-49666.git/user/update/details',
       myuser,
       {headers : {authorization : `Bearer ${accessToken}`}},
     );
@@ -59,7 +59,7 @@ export const updateUser = createAsyncThunk(
 export const updatePassword = createAsyncThunk(
   'user/updatepassword',
   async({ data,setUpdated,accessToken },thunkAPI)=>{
-    const res = await axios.post('http://127.0.0.1:3500/user/update/password',
+    const res = await axios.post('https://git.heroku.com/sheltered-stream-49666.git/user/update/password',
       data,
       {headers : {authorization : `Bearer ${accessToken}`}},
     );

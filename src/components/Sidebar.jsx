@@ -1,5 +1,4 @@
 import React,{ useState,useEffect } from 'react';
-import lake from '../images/lake.jpg';
 import { useSelector,useDispatch } from 'react-redux';
 import { getAllChats } from '../features/chatSlice';
 import {more} from '../images/index';
@@ -13,18 +12,46 @@ function Sidebar() {
   const user = useSelector(store=>store.user);
   const chats = useSelector(store=>store.chat);
   const [hideMore, setHideMore] = useState(true);
+  const [disconnected, setDisconnected] = useState(0);
+  const MAX_RECONNECT_COUNT = 3;
   const dispatch = useDispatch();
   useEffect(()=>{
     dispatch(getAllChats({accessToken:user.accessToken}));
-    socket.once('connect',()=>{
+    // console.log('connect');
+    socket.connect();
+    socket.on('connect',()=>{
       console.log('connected to socket io');
+      setDisconnected(false);
     });
+    socket.once("connect_error", (err) => {
+      console.log(`connect_error due to ${err.message}`);
+      setDisconnected(disconnected+1);
+      if( disconnected+1<=MAX_RECONNECT_COUNT ){
+        console.log(disconnected);
+        socket.connect();
+      }
+    });
+    socket.once('disconnect',()=>{
+      socket.connect()
+      console.log('disconnected');
+    });
+
+    return ()=>{
+      // console.log('dismounted');
+      socket.removeAllListeners('connect');
+      socket.removeAllListeners('reconnect_failed');
+    }
 
   },[]);
 
   useEffect(()=>{
     socket.emit('setEmail',user.email);
   },[socket.id]);
+
+  const reconnectSocket = ()=>{
+    setDisconnected(0);
+    socket.connect();
+  }
 
 
   return (
@@ -63,7 +90,15 @@ function Sidebar() {
           </NavLink>
         })}
       </div>
+      { disconnected>MAX_RECONNECT_COUNT && <div className='fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center'>
+        <div className='w-2/3 text-emerald-200 border-2 border-emerald-500 rounded-md px-3 py-2 flex-col flex items-center gap-5'>
+          <h2 className='text-2xl text-center text-green-500'>You Got Disconnected! Try To Reconnect</h2>
+          <button className='bg-green-500 px-3 py-1.5 text-white uppercase rounded-md font-bold w-1/4' 
+          onClick={reconnectSocket}>Reconnect</button>
+        </div>
+      </div> }
     </div>
+
   )
 }
 

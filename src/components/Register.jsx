@@ -14,7 +14,7 @@ function Register() {
   const submitForm = async(e)=>{
     e.preventDefault();
 
-    let res = await axios.post('http://127.0.0.1:3500/user/register',{
+    let res = await axios.post('https://git.heroku.com/sheltered-stream-49666.git/user/register',{
       email : emailRef.current.value,
       username : usernameRef.current.value,
       password : passwordRef.current.value,

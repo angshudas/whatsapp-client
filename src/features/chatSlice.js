@@ -9,7 +9,7 @@ const initialState = {
 export const getAllChats = createAsyncThunk(
   'user/getChats',
   async({accessToken},thunkAPI)=>{
-    let res = await axios.get('http://127.0.0.1:3500/chat/allchats',{headers : {authorization : `Bearer ${accessToken}`}});
+    let res = await axios.get('https://git.heroku.com/sheltered-stream-49666.git/chat/allchats',{headers : {authorization : `Bearer ${accessToken}`}});
 
 
     console.log(res.data);
@@ -23,7 +23,7 @@ export const addNewChat = createAsyncThunk(
   '/chat/newchat',
   async ({friend,accessToken},thunkAPI)=>{
     console.log('here');
-    const res = await axios.post('http://127.0.0.1:3500/chat/newchat',
+    const res = await axios.post('https://git.heroku.com/sheltered-stream-49666.git/chat/newchat',
       {friend},
       {headers : {authorization : `Bearer ${accessToken}`}},
       

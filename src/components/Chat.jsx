@@ -40,7 +40,6 @@ function Chat() {
   }
 
   const receiveMessage = (text)=>{
-    // console.log(text,room);
     if( room.roomId==='' && room.fetching ){
       let buff = JSON.parse(JSON.stringify(buffer));
       buff.push({ message : text,time : Date.now() });
@@ -48,7 +47,6 @@ function Chat() {
       console.log(text,room.roomId,room.fetching);
       return;
     }
-    console.log(text,'outside');
 
     const newMessage = {
       message: text,
@@ -58,7 +56,6 @@ function Chat() {
     };
     dispatch(appendMessage(newMessage));
     setScroll(true);
-
   }
 
   const handleSubmit = ()=>{
