@@ -2,7 +2,7 @@ import { io } from 'socket.io-client';
 import { createSlice,createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const socket = io('https://git.heroku.com/sheltered-stream-49666.git/',{
+export const socket = io(' https://sheltered-stream-49666.herokuapp.com/',{
   autoConnect : false,
   // reconnectionAttempts : 3
   reconnection : false
@@ -22,10 +22,11 @@ export const getRoomDetails = createAsyncThunk(
   'room/details',
   async({roomId,accessToken,roomimg,name},thunkAPI)=>{
     console.log(roomId);
-    const res = await axios.get('https://git.heroku.com/sheltered-stream-49666.git/room/details',{
+    const res = await axios.get(' https://sheltered-stream-49666.herokuapp.com/room/details',{
       headers : { 
         room_id : roomId,
-        authorization : `Bearer ${accessToken}`
+        authorization : `Bearer ${accessToken}`,
+        'Access-Control-Allow-Origin' : '*',
       },
     });
     socket.emit('setChat',roomId);

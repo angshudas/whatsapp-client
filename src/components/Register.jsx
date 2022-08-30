@@ -14,12 +14,12 @@ function Register() {
   const submitForm = async(e)=>{
     e.preventDefault();
 
-    let res = await axios.post('https://git.heroku.com/sheltered-stream-49666.git/user/register',{
+    let res = await axios.post(' https://sheltered-stream-49666.herokuapp.com/user/register',{
       email : emailRef.current.value,
       username : usernameRef.current.value,
       password : passwordRef.current.value,
       userimg,
-    });
+    },{headers : {'Access-Control-Allow-Origin' : '*',}});
     if( res.status===201 ){
       setRegistered(true);
     }
